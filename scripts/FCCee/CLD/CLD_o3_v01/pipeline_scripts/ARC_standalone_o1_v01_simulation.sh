@@ -5,7 +5,7 @@ echo "Sourcing executed successfully"
 
 echo "Starting simulation..."
 ddsim --steeringFile CLDConfig/CLDConfig/cld_arc_steer.py \
-      --enableGun --gun.distribution cos(theta) \ 
+      --enableGun --gun.distribution "cos(theta)" \ 
       --gun.energy "20*GeV" --gun.particle proton \
       --numberOfEvents $NUMBER_OF_EVENTS \
       --outputFile ARC_sim.root \
