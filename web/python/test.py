@@ -1,4 +1,39 @@
 import os
+import argparse
+import jinja2
+import datetime
+from collections import defaultdict
+import yaml
+
+def get_latest_modified_date(folder_path):
+    latest_modified_date = None
+
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            modified_date = os.path.getmtime(file_path)
+
+            if latest_modified_date is None or modified_date > latest_modified_date:
+                latest_modified_date = modified_date
+
+    if latest_modified_date is None:
+        latest_modified_date = 0
+    latest_modified_date = datetime.datetime.fromtimestamp(int(latest_modified_date))
+    return latest_modified_date
+
+def write_plots(folder):
+    # Generate a list of the PNG images in the folder
+    svg_files = [os.path.join('plots', filename) for filename in os.listdir(os.path.join(folder, 'plots')) if filename.endswith('.svg')]
+    print(svg_files)
+
+    # Generate the HTML markup using a Jinja2 template
+    template = jinja2.Template('''
+    {% for filename in svg_files %} <img src="{{ filename }}" class="plot-container"/>
+    {% endfor %}
+    ''')
+    html = template.render(svg_files=svg_files)
+
+    return html
 
 def generate_subsystem_page(subsystem_path, plots, output_dir):
     subsystem_name = os.path.basename(subsystem_path)
@@ -43,7 +78,11 @@ def generate_subsystem_page(subsystem_path, plots, output_dir):
     with open(os.path.join(output_dir, "index.html"), "w") as f:
         f.write(subsystem_html)
 
-def generate_main_page(directory, output_dir):
+
+def generate_main_page(dest):
+    detector_folders = [folder for folder in os.listdir(dest) if os.path.isdir(os.path.join(dest, folder))]
+    detector_folders.remove('static')
+
     main_html = """
     <!DOCTYPE html>
     <html lang="en">
@@ -74,8 +113,8 @@ def generate_main_page(directory, output_dir):
         <div class="collapse" id="foldersList">
     """
 
-    for detector in os.listdir(directory):
-        detector_path = os.path.join(directory, detector)
+    for detector in detector_folders:
+        detector_path = os.path.join(dest, detector)
         if os.path.isdir(detector_path):
             main_html += f"""
             <div class="card">
@@ -87,6 +126,7 @@ def generate_main_page(directory, output_dir):
               <div id="collapseDetector{detector}" class="collapse" data-parent="#foldersList">
                 <div class="card-body">
             """
+            '''
             for version in os.listdir(detector_path):
                 version_path = os.path.join(detector_path, version)
                 if os.path.isdir(version_path):
@@ -100,32 +140,34 @@ def generate_main_page(directory, output_dir):
                       <div id="collapseVersion{detector}{version}" class="collapse" data-parent="#collapseDetector{detector}">
                         <div class="card-body">
                     """
-                    for subsystem in os.listdir(version_path):
-                        subsystem_path = os.path.join(version_path, subsystem)
-                        if os.path.isdir(subsystem_path):
-                            subsystem_link = f"{detector}/{version}/{subsystem}"
-                            subsystem_output_dir = os.path.join(output_dir, subsystem_link)
-                            plots = [os.path.join(subsystem_link, plot) for plot in os.listdir(subsystem_path) if plot.endswith('.svg')]
-                            generate_subsystem_page(subsystem_path, plots, subsystem_output_dir)
-                            main_html += f"""
-                            <div class="card">
-                              <div class="card-header">
-                                <a class="btn btn-link" href="{subsystem_link}/index.html">
-                                  {subsystem}
-                                </a>
-                              </div>
-                            </div>
-                            """
-                    main_html += """
+                    '''
+            
+            #latest_modified_date = [get_latest_modified_date(os.path.join(detector_path, folder)) for folder in detector_path]
+            for version in os.listdir(detector_path):
+              version_path = os.path.join(detector_path, version)
+              if os.path.isdir(version_path):
+                plots = [os.path.join(version_path, plot) for plot in os.listdir(version_path) if plot.endswith('.svg')]
+                generate_subsystem_page(version_path, plots, version_path)
+                main_html += f"""
+                  <div class="card">
+                    <div class="card-header">
+                      <a class="btn btn-link" href="{version_path}/index.html">
+                      </a>
+                    </div>
+                  </div>
+                """
+                main_html += """
                         </div>
                       </div>
                     </div>
                     """
+            '''
             main_html += """
                 </div>
               </div>
             </div>
             """
+            '''
     main_html += """
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -133,10 +175,12 @@ def generate_main_page(directory, output_dir):
     </html>
     """
 
-    with open(os.path.join(output_dir, "index.html"), "w") as f:
+    with open(os.path.join(dest, "index.html"), "w") as f:
         f.write(main_html)
 
 if __name__ == "__main__":
-    parent_directory = "../../scripts/FCCee"  # Replace with your parent directory
-    output_directory = "../../scripts/FCCee"  # Replace with your desired output directory
-    generate_main_page(parent_directory, output_directory)
+    parser = argparse.ArgumentParser(description='Make the web pages for the validation website')
+    parser.add_argument('--dest', required=True, help='Destination directory for the web pages', default='.')
+
+    args = parser.parse_args()
+    generate_main_page(args.dest)
