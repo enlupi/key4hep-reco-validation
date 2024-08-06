@@ -35,15 +35,15 @@ def write_plots(folder):
 
     return html
 
-def generate_subsystem_page(subsystem_path, plots, output_dir):
-    subsystem_name = os.path.basename(subsystem_path)
-    subsystem_html = f"""
+def generate_subsystem_page(version_path, plots):
+    version_name = os.path.basename(version_path)
+    plot_html = f"""
     <!DOCTYPE html>
     <html lang="en">
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{subsystem_name}</title>
+        <title>{version_name}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
       </head>
       <body>
@@ -57,16 +57,16 @@ def generate_subsystem_page(subsystem_path, plots, output_dir):
           </div>
         </nav>
         <div class="container">
-          <h1>{subsystem_name}</h1>
+          <h1>{version_name}</h1>
           <div class="row">
     """
     for plot in plots:
-        subsystem_html += f"""
+        plot_html += f"""
             <div class="col-md-4">
               <img src="{plot}" class="img-fluid" alt="{plot}">
             </div>
         """
-    subsystem_html += """
+    plot_html += """
           </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -74,9 +74,8 @@ def generate_subsystem_page(subsystem_path, plots, output_dir):
     </html>
     """
 
-    os.makedirs(output_dir, exist_ok=True)
-    with open(os.path.join(output_dir, "index.html"), "w") as f:
-        f.write(subsystem_html)
+    with open(os.path.join(version_path, "index.html"), "w") as f:
+        f.write(plot_html)
 
 
 def generate_main_page(dest):
@@ -144,14 +143,15 @@ def generate_main_page(dest):
             
             #latest_modified_date = [get_latest_modified_date(os.path.join(detector_path, folder)) for folder in detector_path]
             for version in os.listdir(detector_path):
-              version_path = os.path.join(detector_path, version)
-              if os.path.isdir(version_path):
-                plots = [os.path.join(version_path, plot) for plot in os.listdir(version_path) if plot.endswith('.svg')]
-                generate_subsystem_page(version_path, plots, version_path)
-                main_html += f"""
+                version_path = os.path.join(detector_path, version)
+                if os.path.isdir(version_path):
+                  plots = [os.path.join(version_path, plot) for plot in os.listdir(version_path) if plot.endswith('.svg')]
+                  generate_subsystem_page(version_path, plots)
+                  main_html += f"""
                   <div class="card">
                     <div class="card-header">
                       <a class="btn btn-link" href="{version_path}/index.html">
+                      {version}
                       </a>
                     </div>
                   </div>
