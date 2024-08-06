@@ -1,6 +1,6 @@
 # simulation phase
 echo "Sourcing key4hep..."
-source /cvmfs/sw-nightlies.hsf.org/key4hep/setup.sh
+source /cvmfs/sw.hsf.org/key4hep/setup.sh
 echo "Sourcing executed successfully"
 
 echo "Starting simulation..."
