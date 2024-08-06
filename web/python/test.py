@@ -182,5 +182,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Make the web pages for the validation website')
     parser.add_argument('--dest', required=True, help='Destination directory for the web pages', default='.')
 
+    print("I AM RUNNING THE STUPID SCRIPT")
+
     args = parser.parse_args()
     generate_main_page(args.dest)
