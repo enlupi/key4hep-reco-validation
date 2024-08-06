@@ -7,7 +7,7 @@ cd CLDConfig/CLDConfig
 echo "Starting simulation..."
 ddsim --steeringFile cld_arc_steer.py \
       --enableGun --gun.distribution uniform \
-      --gun.particle proton --gun.energy "20*GeV"\
+      --gun.particle proton --gun.energy "100*GeV"\
       --numberOfEvents $NUMBER_OF_EVENTS \
       --outputFile  $WORKAREA/$GEOMETRY/$VERSION/ARC_sim.root \
       --random.enableEventSeed --random.seed 42
