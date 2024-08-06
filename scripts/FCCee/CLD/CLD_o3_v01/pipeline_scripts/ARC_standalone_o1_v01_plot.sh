@@ -12,5 +12,5 @@ echo "Script executed successfully"
 # upload them on website
 echo "Starting website script..."
 cd key4hep-reco-validation/web/python
-python3 test.py
+python3 make_web.py --dest $WORKAREA/$PLOTAREA
 echo "Script executed successfully"
