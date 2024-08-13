@@ -80,7 +80,7 @@ for folder in detector_folders:
     print(folder)
     versions = [version_folder for version_folder in os.listdir(os.path.join(args.dest, folder)) if os.path.isdir(os.path.join(args.dest, folder, version_folder))]
     version_folders.append(versions)
-    dates = [get_latest_modified_date(os.path.join(args.dest, folder)) for folder in version_folders]
+    dates = [get_latest_modified_date(os.path.join(args.dest, folder, version)) for version in versions]
     latest_modified_date.append(dates)
 
 env = jinja2.Environment(loader=jinja2.FileSystemLoader('../templates'))
