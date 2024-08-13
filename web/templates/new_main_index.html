@@ -33,7 +33,7 @@
 
     <h2> Available Detectors: </h2>
 
-    {% for detector, versions-dates in folders %}
+    {% for detector, versions_dates in folders %}
     <p>
       <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample_{{detector}}" aria-expanded="false" aria-controls="collapseExample_{{detector}}">
         {{detector}}
@@ -41,7 +41,7 @@
     </p>
     
     <div class="collapse" id="collapseExample_{{detector}}">
-      {% for version, date in versions-dates}
+      {% for version, date in versions_dates}
       <div class="card card-body">
         <a href="{{detector}}/{{ version }}/index.html">{{ version }}</a>
         Last updated: {{ date }}
