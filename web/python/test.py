@@ -1,9 +1,39 @@
+# Make the actual web pages for the validation website by filling the templates
+# and adding index.html files to the directories
+
 import os
 import argparse
 import jinja2
 import datetime
 from collections import defaultdict
 import yaml
+
+class TranslationDict(defaultdict):
+    def __missing__(self, key):
+        return key
+
+SECTION_NAMES = TranslationDict()
+SECTION_NAMES['sim_reco'] = 'Simulation and Reconstruction'
+
+FOLDER_NAMES = TranslationDict()
+for k, v in {'track_validation': 'Track Validation',
+             'jets': 'Jet Validation',
+             'distributions': 'Distributions',}.items():
+    FOLDER_NAMES[k] = v
+
+metadata = {}
+if os.path.exists('metadata.yaml'):
+    with open('metadata.yaml') as f:
+        metadata = yaml.load(f, Loader=yaml.FullLoader)
+if 'key4hep-spack' in metadata:
+    metadata['key4hep-spack'] = [metadata['key4hep-spack'], f"https://github.com/key4hep/key4hep-spack/commit/{metadata['key4hep-spack']}"]
+if 'spack' in metadata:
+    metadata['spack'] = [metadata['spack'], f"https://github.com/spack/spack/commit/{metadata['spack']}"]
+for k, v in metadata.items():
+    if isinstance(v, str) or len(v) == 1:
+        metadata[k] = [v, None]
+print(metadata)
+
 
 def get_latest_modified_date(folder_path):
     latest_modified_date = None
@@ -35,154 +65,45 @@ def write_plots(folder):
 
     return html
 
-def generate_subsystem_page(version_path, plots):
-    version_name = os.path.basename(version_path)
-    plot_html = f"""
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{version_name}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-      </head>
-      <body>
-        <nav class="navbar navbar-expand navbar-dark" style="background-color: #070c49;">
-          <div class="container-fluid">
-            <a class="nav-link h5" href="../index.html">
-              <div class="nav-text">
-                <b>Home</b>
-              </div>
-            </a>
-          </div>
-        </nav>
-        <div class="container">
-          <h1>{version_name}</h1>
-          <div class="row">
-    """
-    for plot in plots:
-        plot_html += f"""
-            <div class="col-md-4">
-              <img src="{plot}" class="img-fluid" alt="{plot}">
-            </div>
-        """
-    plot_html += """
-          </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-      </body>
-    </html>
-    """
+parser = argparse.ArgumentParser(description='Make the web pages for the validation website')
+parser.add_argument('--dest', required=True, help='Destination directory for the web pages', default='.')
 
-    with open(os.path.join(version_path, "index.html"), "w") as f:
-        f.write(plot_html)
+args = parser.parse_args()
+
+# detector folders
+detector_folders = [folder for folder in os.listdir(args.dest) if os.path.isdir(os.path.join(args.dest, folder))]
+detector_folders.remove('static')
+# latest_modified_date = [get_latest_modified_date(os.path.join(args.dest, folder)) for folder in top_folders]
+version_folders = []
+latest_modified_date = []
+for folder in detector_folders:
+    print(folder)
+    versions = [version_folder for version_folder in os.listdir(os.path.join(args.dest, folder)) if os.path.isdir(os.path.join(args.dest, folder, version_folder))]
+    version_folders.append(versions)
+    dates = [get_latest_modified_date(os.path.join(args.dest, folder)) for folder in version_folders]
+    latest_modified_date.append(dates)
+
+env = jinja2.Environment(loader=jinja2.FileSystemLoader('../templates'))
+template = env.get_template('new_main_index.html')
+with open(os.path.join(args.dest, 'index.html'), 'w') as f:
+    f.write(template.render(folders=zip(detector_folders, zip(version_folders, latest_modified_date))))
+
+# Now let's put an index.html file in each of the subdirectories and the plot folders
+for i_folder, folder in enumerate(detector_folders):
+    print(folder)
+    for version in version_folders[i_folder]:
+        subsystem_folders = [subsyst for subsyst in os.listdir(os.path.join(args.dest, folder, version)) if os.path.isdir(os.path.join(args.dest, folder, version, subsyst))]
+        plot_category_names = [FOLDER_NAMES[x] for x in subsystem_folders]
+    
+        template = env.get_template('version_index.html')
+        with open(os.path.join(args.dest, folder, version, 'index.html'), 'w') as f:
+            f.write(template.render(plot_sections=zip(subsystem_folders, plot_category_names), table=metadata))
+
+        for subsystem in subsystem_folders:
+            template = env.get_template('plot_index.html')
+            content = write_plots(os.path.join(args.dest, folder, version, subsystem))
+
+            with open(os.path.join(args.dest, folder, version, subsystem, 'index.html'), 'w') as f:
+                f.write(template.render(content=content))
 
 
-def generate_main_page(dest):
-    detector_folders = [folder for folder in os.listdir(dest) if os.path.isdir(os.path.join(dest, folder))]
-    detector_folders.remove('static')
-
-    main_html = """
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Key4hep validation</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-      </head>
-      <body>
-        <nav class="navbar navbar-expand navbar-dark" style="background-color: #070c49;">
-          <div class="container-fluid">
-            <a class="nav-link h5" href="index.html">
-              <div class="nav-text">
-                <b>Home</b>
-              </div>
-            </a>
-          </div>
-        </nav>
-        <p>This is a webpage for validation of Key4hep software. The validation is done automatically and runs in Gitlab CI. The results are stored in EOS and published to this webpage.</p>
-        <p>For selecting different detectors and geometries, click the button below to expand a list of available options.</p>
-        <h1>Simulation and reconstruction</h1>
-        <p>
-          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#foldersList" aria-expanded="false" aria-controls="foldersList">
-            Detector, geometry and process
-          </button>
-        </p>
-        <div class="collapse" id="foldersList">
-    """
-
-    for detector in detector_folders:
-        detector_path = os.path.join(dest, detector)
-        if os.path.isdir(detector_path):
-            main_html += f"""
-            <div class="card">
-              <div class="card-header">
-                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetector{detector}" aria-expanded="false" aria-controls="collapseDetector{detector}">
-                  {detector}
-                </button>
-              </div>
-              <div id="collapseDetector{detector}" class="collapse" data-parent="#foldersList">
-                <div class="card-body">
-            """
-            '''
-            for version in os.listdir(detector_path):
-                version_path = os.path.join(detector_path, version)
-                if os.path.isdir(version_path):
-                    main_html += f"""
-                    <div class="card">
-                      <div class="card-header">
-                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVersion{detector}{version}" aria-expanded="false" aria-controls="collapseVersion{detector}{version}">
-                          {version}
-                        </button>
-                      </div>
-                      <div id="collapseVersion{detector}{version}" class="collapse" data-parent="#collapseDetector{detector}">
-                        <div class="card-body">
-                    """
-                    '''
-            
-            #latest_modified_date = [get_latest_modified_date(os.path.join(detector_path, folder)) for folder in detector_path]
-            for version in os.listdir(detector_path):
-                version_path = os.path.join(detector_path, version)
-                if os.path.isdir(version_path):
-                  plots = [os.path.join(version_path, plot) for plot in os.listdir(version_path) if plot.endswith('.svg')]
-                  generate_subsystem_page(version_path, plots)
-                  main_html += f"""
-                  <div class="card">
-                    <div class="card-header">
-                      <a class="btn btn-link" href="{version_path}/index.html">
-                      {version}
-                      </a>
-                    </div>
-                  </div>
-                """
-                main_html += """
-                        </div>
-                      </div>
-                    </div>
-                    """
-            '''
-            main_html += """
-                </div>
-              </div>
-            </div>
-            """
-            '''
-    main_html += """
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-      </body>
-    </html>
-    """
-
-    with open(os.path.join(dest, "index.html"), "w") as f:
-        f.write(main_html)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Make the web pages for the validation website')
-    parser.add_argument('--dest', required=True, help='Destination directory for the web pages', default='.')
-
-    print("I AM RUNNING THE STUPID SCRIPT")
-
-    args = parser.parse_args()
-    generate_main_page(args.dest)
