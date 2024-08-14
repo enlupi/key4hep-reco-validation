@@ -99,7 +99,7 @@ for i_folder, folder in enumerate(detector_folders):
     
         template = env.get_template('version_index.html')
         with open(os.path.join(args.dest, folder, version, 'index.html'), 'w') as f:
-            f.write(template.render(subsystems=zip(subsystem_folders, plot_category_names), table=metadata))
+            f.write(template.render(subsystems=zip(subsystem_folders, plot_category_names), table=metadata, version=version))
 
         for subsystem in subsystem_folders:
             print("Subsystem:", subsystem)
@@ -108,4 +108,4 @@ for i_folder, folder in enumerate(detector_folders):
             content = write_plots(os.path.join(args.dest, folder, version, subsystem))
 
             with open(os.path.join(args.dest, folder, version, subsystem, 'index.html'), 'w') as f:
-                f.write(template.render(content=content, subsystems=subsystem_folders))
+                f.write(template.render(content=content, subsystems=subsystem_folders, version=version, subsystem=subsystem))
