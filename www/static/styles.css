@@ -12,19 +12,28 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar .nav-link {
-    padding: 0px 30px;
+.navbar .container {
+    display: flex;
+    align-items: center; /* Vertically centers the content */
+    justify-content: flex-start; /* Aligns items to the left */
 }
 
-.nav-text{
-    padding: 10px 20px;
+.navbar .nav-link {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .nav-text{
     color: white;
+    font-weight: bold;
   }
-  .nav-text:hover {
+
+.navbar .nav-text:hover {
     background: #ffffff;
     border-radius: 32px;
     color: #063263;
-  }
+    font-weight: bold;
+}
 
 /* Headings Styling */
 h1, h2 {
