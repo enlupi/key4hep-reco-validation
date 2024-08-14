@@ -108,4 +108,4 @@ for i_folder, folder in enumerate(detector_folders):
             content = write_plots(os.path.join(args.dest, folder, version, subsystem))
 
             with open(os.path.join(args.dest, folder, version, subsystem, 'index.html'), 'w') as f:
-                f.write(template.render(content=content))
+                f.write(template.render(content=content, subsystems=subsystem_folders))

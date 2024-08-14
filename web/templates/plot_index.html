@@ -17,6 +17,16 @@
             </b>
           </div>
         </a>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="subsystemsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Subsystems
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="subsystemsDropdown">
+            {% for subsystem in subsystems %}
+            <li><a class="dropdown-item" href="../{{subsystem}}/index.html"> {{subsystem}} </a></li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </nav>
 
