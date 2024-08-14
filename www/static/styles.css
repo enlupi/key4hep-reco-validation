@@ -15,7 +15,6 @@ body {
 .navbar .container {
     display: flex;
     align-items: center; /* Vertically centers the content */
-    justify-content: flex-start; /* Aligns items to the left */
 }
 
 .navbar .nav-link {
@@ -26,6 +25,10 @@ body {
 .navbar .nav-text{
     color: white;
     font-weight: bold;
+    padding-left: 12;
+    padding-right: 12;
+    padding-top: 8;
+    padding-top: 8;
   }
 
 .navbar .nav-text:hover {
