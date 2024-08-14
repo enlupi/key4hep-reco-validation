@@ -72,28 +72,30 @@ p {
 
 /* Dropdown Button Styling */
 .dropdown .btn-secondary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #070c49;
+    border-color: #070c49;
     color: #fff;
     border-radius: 5px;
+    font-weight: bold;
 }
 
 .dropdown .btn-secondary:hover {
-    background-color: #0056b3;
-    border-color: #004494;
+    background-color: white;
+    border-color: white;
+    color: #070c49;
 }
 
 /* Dropdown Menu Styling */
 .dropdown-menu {
     background-color: #ffffff;
-    border: 1px solid #007bff;
+    border: 1px solid #070c49;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
 }
 
 .dropdown-item {
-    color: #007bff;
+    color: #070c49;
     padding: 10px 20px;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -104,7 +106,7 @@ p {
 
 .dropdown-item:hover {
     background-color: #e9f5ff;
-    color: #0056b3;
+    color: #040836;
 }
 
 /* Submenu Styling */
@@ -117,7 +119,7 @@ p {
     left: 100%;
     margin-top: -1px;
     background-color: #ffffff;
-    border: 1px solid #007bff;
+    border: 1px solid #070c49;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -127,19 +129,19 @@ p {
 }
 
 .dropdown-submenu > .dropdown-item::after {
-    content: "\25B6"; /* Right arrow */
+    content: ""; 
     float: right;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .dropdown-submenu > .dropdown-item:hover::after {
-    color: #0056b3;
+    color: #040836;
 }
 
 /* Hover Effect for Submenu Items */
 .dropdown-submenu .dropdown-item:hover {
     background-color: #e9f5ff;
-    color: #0056b3;
+    color: #040836;
 }
 
 /* Adjust Menu Item Padding and Spacing */
