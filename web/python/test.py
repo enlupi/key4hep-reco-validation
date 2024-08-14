@@ -82,16 +82,18 @@ for folder in detector_folders:
     version_folders.append(versions)
     dates = [get_latest_modified_date(os.path.join(args.dest, folder, version)) for version in versions]
     latest_modified_date.append(dates)
+version_date = [[(v, d) for v, d in zip(version, date)] for version, date in zip(version_folders, latest_modified_date)]
 
 env = jinja2.Environment(loader=jinja2.FileSystemLoader('../templates'))
 template = env.get_template('new_main_index.html')
 with open(os.path.join(args.dest, 'index.html'), 'w') as f:
-    f.write(template.render(folders=zip(detector_folders, zip(version_folders, latest_modified_date))))
+    f.write(template.render(folders=zip(detector_folders, version_date)))
 
 # Now let's put an index.html file in each of the subdirectories and the plot folders
 for i_folder, folder in enumerate(detector_folders):
-    print(folder)
+    print("Detector:", folder)
     for version in version_folders[i_folder]:
+        print("Version:", version)
         subsystem_folders = [subsyst for subsyst in os.listdir(os.path.join(args.dest, folder, version)) if os.path.isdir(os.path.join(args.dest, folder, version, subsyst))]
         plot_category_names = [FOLDER_NAMES[x] for x in subsystem_folders]
     
@@ -100,10 +102,10 @@ for i_folder, folder in enumerate(detector_folders):
             f.write(template.render(plot_sections=zip(subsystem_folders, plot_category_names), table=metadata))
 
         for subsystem in subsystem_folders:
+            print("Subsystem:", subsystem)
+            print("Full path:", os.path.join(args.dest, folder, version, subsystem))
             template = env.get_template('plot_index.html')
             content = write_plots(os.path.join(args.dest, folder, version, subsystem))
 
             with open(os.path.join(args.dest, folder, version, subsystem, 'index.html'), 'w') as f:
                 f.write(template.render(content=content))
-
-
