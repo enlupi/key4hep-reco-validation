@@ -13,14 +13,18 @@ body {
 }
 
 .navbar .nav-link {
-    color: #ffffff;
-    font-weight: bold;
-    padding-left: 15px;
+    padding: 0px 30px;
 }
 
-.navbar .nav-link:hover {
-    color: #e0e0e0;
-}
+.nav-text{
+    padding: 10px 20px;
+    color: white;
+  }
+  .nav-text:hover {
+    background: #ffffff;
+    border-radius: 32px;
+    color: #070c49;
+  }
 
 /* Headings Styling */
 h1, h2 {
@@ -34,7 +38,7 @@ h1, h2 {
     max-width: 90%;
     height: auto;
     margin: 20px auto;
-    border: 2px solid #007bff;
+    border: 2px solid #070c49;
     border-radius: 5px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
@@ -49,30 +53,17 @@ h1, h2 {
 }
 
 
-/* Dropdown Button Styling */
-.dropdown .btn-secondary {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-}
-
-.dropdown .btn-secondary:hover {
-    background-color: #0056b3;
-    border-color: #004494;
-}
-
 /* Dropdown Menu Styling */
 .dropdown-menu {
     background-color: #ffffff;
-    border: 1px solid #007bff;
+    border: 1px solid #070c49;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
 }
 
 .dropdown-item {
-    color: #007bff;
+    color: #070c49;
     padding: 10px 20px;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -83,7 +74,7 @@ h1, h2 {
 
 .dropdown-item:hover {
     background-color: #e9f5ff;
-    color: #0056b3;
+    color: #040836;
 }
 
 /* Submenu Styling */
@@ -96,7 +87,7 @@ h1, h2 {
     left: 100%;
     margin-top: -1px;
     background-color: #ffffff;
-    border: 1px solid #007bff;
+    border: 1px solid #070c49;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -106,19 +97,19 @@ h1, h2 {
 }
 
 .dropdown-submenu > .dropdown-item::after {
-    content: "\25B6"; /* Right arrow */
+    content: ""; 
     float: right;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .dropdown-submenu > .dropdown-item:hover::after {
-    color: #0056b3;
+    color: #040836;
 }
 
 /* Hover Effect for Submenu Items */
 .dropdown-submenu .dropdown-item:hover {
     background-color: #e9f5ff;
-    color: #0056b3;
+    color: #040836;
 }
 
 /* Adjust Menu Item Padding and Spacing */
