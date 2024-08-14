@@ -69,3 +69,81 @@ p {
 .collapse {
     margin-bottom: 20px;
 }
+
+/* Dropdown Button Styling */
+.dropdown .btn-secondary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.dropdown .btn-secondary:hover {
+    background-color: #0056b3;
+    border-color: #004494;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background-color: #ffffff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+.dropdown-item {
+    color: #007bff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #e9f5ff;
+    color: #0056b3;
+}
+
+/* Submenu Styling */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+    background-color: #ffffff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > .dropdown-item::after {
+    content: "\25B6"; /* Right arrow */
+    float: right;
+    margin-top: 5px;
+}
+
+.dropdown-submenu > .dropdown-item:hover::after {
+    color: #0056b3;
+}
+
+/* Hover Effect for Submenu Items */
+.dropdown-submenu .dropdown-item:hover {
+    background-color: #e9f5ff;
+    color: #0056b3;
+}
+
+/* Adjust Menu Item Padding and Spacing */
+.dropdown-item {
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
