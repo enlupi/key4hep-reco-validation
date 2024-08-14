@@ -1,13 +1,43 @@
-.plot-container {
-    height: auto;
-    min-width: 25%;
-    justify-content: center; /* align horizontally in the center */
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 20px;
 }
 
-.plot-header {
-    padding: 20px;
-    display: flex;
-    justify-content: center; /* align horizontally in the center */
+/* Navbar Styling */
+.navbar {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-link {
+    color: #ffffff;
     font-weight: bold;
-    margin-bottom: 0px;
+    padding-left: 15px;
+}
+
+.navbar .nav-link:hover {
+    color: #e0e0e0;
+}
+
+/* Image Plot Styling */
+.plot-container {
+    display: block;
+    max-width: 90%;
+    height: auto;
+    margin: 20px auto;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+/* Responsive Images */
+@media (max-width: 768px) {
+    .plot-container {
+        max-width: 100%;
+    }
 }
