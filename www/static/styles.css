@@ -18,17 +18,18 @@ body {
 }
 
 .navbar .nav-link {
-    padding: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
     margin: 0;
 }
 
 .navbar .nav-text{
     color: white;
     font-weight: bold;
-    padding-left: 12;
-    padding-right: 12;
-    padding-top: 8;
-    padding-top: 8;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
 .navbar .nav-text:hover {
