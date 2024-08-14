@@ -23,12 +23,12 @@ body {
   .nav-text:hover {
     background: #ffffff;
     border-radius: 32px;
-    color: #3b6fa8;
+    color: #063263;
   }
 
 /* Headings Styling */
 h1, h2 {
-    color: #0b4687;
+    color: #063263;
     margin-bottom: 20px;
 }
 
@@ -76,8 +76,8 @@ p {
 
 /* Dropdown Button Styling */
 .dropdown .btn-secondary {
-    background-color: #3b6fa8;
-    border-color: #3b6fa8;
+    background-color: #063263;
+    border-color: #063263;
     color: #fff;
     border-radius: 5px;
     font-weight: bold;
@@ -86,20 +86,20 @@ p {
 .dropdown .btn-secondary:hover {
     background-color: white;
     border-color: white;
-    color: #3b6fa8;
+    color: #063263;
 }
 
 /* Dropdown Menu Styling */
 .dropdown-menu {
     background-color: #ffffff;
-    border: 1px solid #3b6fa8;
+    border: 1px solid #063263;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
 }
 
 .dropdown-item {
-    color: #3b6fa8;
+    color: #063263;
     padding: 10px 20px;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -123,7 +123,7 @@ p {
     left: 100%;
     margin-top: -1px;
     background-color: #ffffff;
-    border: 1px solid #3b6fa8;
+    border: 1px solid #063263;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -152,4 +152,25 @@ p {
 .dropdown-item {
     padding: 10px 20px;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* Image Plot Styling */
+.plot-container {
+    display: block;
+    max-width: 90%;
+    height: auto;
+    margin: 20px auto;
+    border: 2px solid #0b4687;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+/* Responsive Images */
+@media (max-width: 768px) {
+    .plot-container {
+        max-width: 100%;
+    }
 }
