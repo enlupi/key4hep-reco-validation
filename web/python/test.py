@@ -21,18 +21,21 @@ for k, v in {'track_validation': 'Track Validation',
              'distributions': 'Distributions',}.items():
     FOLDER_NAMES[k] = v
 
-metadata = {}
-if os.path.exists('metadata.yaml'):
-    with open('metadata.yaml') as f:
-        metadata = yaml.load(f, Loader=yaml.FullLoader)
-if 'key4hep-spack' in metadata:
-    metadata['key4hep-spack'] = [metadata['key4hep-spack'], f"https://github.com/key4hep/key4hep-spack/commit/{metadata['key4hep-spack']}"]
-if 'spack' in metadata:
-    metadata['spack'] = [metadata['spack'], f"https://github.com/spack/spack/commit/{metadata['spack']}"]
-for k, v in metadata.items():
-    if isinstance(v, str) or len(v) == 1:
-        metadata[k] = [v, None]
-print(metadata)
+def get_metadata(folder_path):
+    metadata = {}
+    file = os.path.join(args.dest, 'index.html')
+    if os.path.exists(file):
+        with open(file) as f:
+            metadata = yaml.load(f, Loader=yaml.FullLoader)
+    if 'key4hep-spack' in metadata:
+        metadata['key4hep-spack'] = [metadata['key4hep-spack'], f"https://github.com/key4hep/key4hep-spack/commit/{metadata['key4hep-spack']}"]
+    if 'spack' in metadata:
+        metadata['spack'] = [metadata['spack'], f"https://github.com/spack/spack/commit/{metadata['spack']}"]
+    for k, v in metadata.items():
+        if isinstance(v, str) or len(v) == 1:
+            metadata[k] = [v, None]
+    print(metadata)
+    return metadata
 
 
 def get_latest_modified_date(folder_path):
@@ -94,6 +97,7 @@ for i_folder, folder in enumerate(detector_folders):
     print("Detector:", folder)
     for version in version_folders[i_folder]:
         print("Version:", version)
+        metadata = get_metadata(os.path.join(args.dest, folder, version))
         subsystem_folders = [subsyst for subsyst in os.listdir(os.path.join(args.dest, folder, version)) if os.path.isdir(os.path.join(args.dest, folder, version, subsyst))]
         plot_category_names = [FOLDER_NAMES[x] for x in subsystem_folders]
     
