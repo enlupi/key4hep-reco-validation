@@ -23,12 +23,12 @@ body {
   .nav-text:hover {
     background: #ffffff;
     border-radius: 32px;
-    color: #070c49;
+    color: #3b6fa8;
   }
 
 /* Headings Styling */
 h1, h2 {
-    color: #070c49;
+    color: #0b4687;
     margin-bottom: 20px;
 }
 
@@ -38,7 +38,7 @@ h1, h2 {
     max-width: 90%;
     height: auto;
     margin: 20px auto;
-    border: 2px solid #070c49;
+    border: 2px solid #3b6fa8;
     border-radius: 5px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
@@ -56,14 +56,14 @@ h1, h2 {
 /* Dropdown Menu Styling */
 .dropdown-menu {
     background-color: #ffffff;
-    border: 1px solid #070c49;
+    border: 1px solid #3b6fa8;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
 }
 
 .dropdown-item {
-    color: #070c49;
+    color: #3b6fa8;
     padding: 10px 20px;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -87,7 +87,7 @@ h1, h2 {
     left: 100%;
     margin-top: -1px;
     background-color: #ffffff;
-    border: 1px solid #070c49;
+    border: 1px solid #3b6fa8;
     border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -103,13 +103,13 @@ h1, h2 {
 }
 
 .dropdown-submenu > .dropdown-item:hover::after {
-    color: #040836;
+    color: #0b4687;
 }
 
 /* Hover Effect for Submenu Items */
 .dropdown-submenu .dropdown-item:hover {
     background-color: #e9f5ff;
-    color: #040836;
+    color: #0b4687;
 }
 
 /* Adjust Menu Item Padding and Spacing */
