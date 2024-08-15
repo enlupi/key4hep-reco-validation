@@ -23,7 +23,7 @@ for k, v in {'track_validation': 'Track Validation',
 
 def get_metadata(folder_path):
     metadata = {}
-    file = os.path.join(folder_path, 'index.html')
+    file = os.path.join(folder_path, 'metadata.yaml')
     if os.path.exists(file):
         with open(file) as f:
             metadata = yaml.load(f, Loader=yaml.FullLoader)
