@@ -33,11 +33,13 @@ if __name__ == "__main__":
   parser.add_argument('--To', type=str, 
                       help='email address of the receiver')
   parser.add_argument('--Server',type=str, 
-                      help='SMTP server to use')
+                      help='SMTP server to use', default='cernmx.cern.ch')
   
   args = parser.parse_args()
     
+  if args.inputFile:
+    with open(args.inputFile, 'r') as file:
+      args.Body = file.read()
   send_mail(args.From, args.To, args.Subject, args.Body, args.Server)
   
-  with open(args.file, 'r') as file:
-      content = file.read()
+  
