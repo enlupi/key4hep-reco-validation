@@ -166,7 +166,7 @@ def compare_and_plot(args):
         f.write(f"Mismatches in {dir}: ")
         for h in failed_match[:-1]:
           f.write(f"{h},  ")
-        f.write(f"failed_match[-1] \n")
+        f.write(f"{failed_match[-1]} \n")
 
 #########################################################################
 
