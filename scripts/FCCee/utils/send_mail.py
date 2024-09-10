@@ -1,19 +1,43 @@
+import argparse
 import smtplib
-
-# Import the email modules we'll need
 from email.message import EmailMessage
 
-# Create a text/plain message
-msg = EmailMessage()
-with open('mail_body.txt', 'r') as file:
-    content = file.read()
-msg.set_content(content)
+def send_mail(sender, receiver, subject, body, server):
 
-msg['Subject'] = f'Test email'
-msg['From'] = 'FCC.FullSim.validation@cern.ch'
-msg['To'] = 'enrico.lupi@cern.ch'
+  # Create a text/plain message
+  msg = EmailMessage()
+  msg.set_content(body)
+  
+  msg['Subject'] = subject
+  msg['From'] = sender
+  msg['To'] = receiver
+  
+  # Send the message via a SMTP server.
+  s = smtplib.SMTP(server)
+  s.send_message(msg)
+  s.quit()
 
-# Send the message via our own SMTP server.
-s = smtplib.SMTP('cernmx.cern.ch')
-s.send_message(msg)
-s.quit()
+
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser(
+        description="Process simulation"
+    )
+  parser.add_argument('-b', '--Body',  type=str, 
+                      help='Body of the email', default='')
+  parser.add_argument('-f', '--inputFile', type=str,
+                      help='File to read to set the body of the email (has precedence on mail_body arg)', default='')
+  parser.add_argument('-s', '--Subject', type=str, 
+                      help='Subject of the email', default='./')
+  parser.add_argument('--From', type=str, 
+                      help='email address of the sender')
+  parser.add_argument('--To', type=str, 
+                      help='email address of the receiver')
+  parser.add_argument('--Server',type=str, 
+                      help='SMTP server to use')
+  
+  args = parser.parse_args()
+    
+  send_mail(args.From, args.To, args.Subject, args.Body, args.Server)
+  
+  with open(args.file, 'r') as file:
+      content = file.read()
