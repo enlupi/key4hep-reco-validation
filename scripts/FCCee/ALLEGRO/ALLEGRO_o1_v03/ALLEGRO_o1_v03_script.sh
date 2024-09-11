@@ -7,7 +7,10 @@ printf "\n\nSETUP PHASE:\n"
 printf "\n\nSIM-DIGI-RECO PHASE:\n"
 
 echo "Starting script..."
-source $FCCCONFIG/share/FCC-config/FullSim/ALLEGRO/ALLEGRO_o1_v03/ctest_sim_digi_reco.sh
+
+
+#################### FAIL on Purpose
+hello, I will make this script fail
 
 
 # analyze simulation file
