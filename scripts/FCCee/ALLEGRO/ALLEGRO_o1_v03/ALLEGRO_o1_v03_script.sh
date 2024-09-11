@@ -1,3 +1,5 @@
+set -e
+
 printf "\n\nSETUP PHASE:\n"
 
 [ -z "$KEY4HEP_STACK" ] && source /cvmfs/sw-nightlies.hsf.org/key4hep/setup.sh
